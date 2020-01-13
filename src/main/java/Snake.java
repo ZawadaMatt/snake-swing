@@ -49,7 +49,7 @@ public class Snake extends JPanel implements ActionListener {
         appleY = random.nextInt(Math.round(windowHeight / 10)) * 10;
     }
 
-    public boolean checkCollision() {
+    public void checkCollisionWithBorders() {
 
         if (x[0] == appleX && y[0] == appleY) {
             snakeSize++;
@@ -67,8 +67,15 @@ public class Snake extends JPanel implements ActionListener {
         if (y[0] < 0) {
             y[0] = windowHeight;
         }
+    }
 
-        return true;
+    public boolean checkCollisionWithTail() {
+        for (int z = snakeSize; z > 0; z--) {
+            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void drawApple(Graphics g) {
@@ -77,10 +84,10 @@ public class Snake extends JPanel implements ActionListener {
     }
 
     public void drawSnake(Graphics g) {
-        g.setColor(Color.green);
+        g.setColor(Color.MAGENTA);
         for (int i = 0; i < snakeSize; i++) {
             g.fillOval(x[i], y[i], 10, 10);
-            g.setColor(Color.PINK);
+            g.setColor(Color.GRAY);
         }
         Toolkit.getDefaultToolkit().sync();
     }
@@ -95,8 +102,12 @@ public class Snake extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        checkCollision();
+        checkCollisionWithBorders();
         move();
+        if (checkCollisionWithTail()) {
+            logger.info("Game Over");
+            System.exit(0);
+        }
         repaint();
     }
 
