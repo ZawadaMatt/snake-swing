@@ -49,12 +49,25 @@ public class Snake extends JPanel implements ActionListener {
         appleY = random.nextInt(Math.round(windowHeight / 10)) * 10;
     }
 
-    public boolean checkCollision () {
+    public boolean checkCollision() {
 
         if (x[0] == appleX && y[0] == appleY) {
             snakeSize++;
             generateAppleLocation();
         }
+        if (x[0] > windowWight) {
+            x[0] = 0;
+        }
+        if (x[0] < 0) {
+            x[0] = windowWight;
+        }
+        if (y[0] > windowHeight) {
+            y[0] = 0;
+        }
+        if (y[0] < 0) {
+            y[0] = windowHeight;
+        }
+
         return true;
     }
 
